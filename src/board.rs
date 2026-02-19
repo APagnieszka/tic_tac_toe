@@ -63,8 +63,68 @@ impl Board {
         match self.check_winner() {
             Some(Cell::X) => println!("Player X wins!"),
             Some(Cell::O) => println!("Player O wins!"),
-            None => println!("No winner yet."),
-            _ => (),
+            _ => println!("No winner yet."),
         }
+    }
+
+    pub fn is_full(&self) -> bool {
+        self.fields.iter().all(|&cell| cell != Cell::Empty)
+    }
+
+    fn minimax(&mut self, depth: usize, is_maximizing: bool) -> i32 {
+        if let Some(winner) = self.check_winner() {
+            return match winner {
+                Cell::X => 10 + depth as i32,  // faster wins are better
+                Cell::O => -10 - depth as i32, // slower losses are better
+                Cell::Empty => 0,
+            };
+        }
+
+        if self.is_full() {
+            return 0;
+        }
+
+        if is_maximizing {
+            let mut best_score = i32::MIN;
+            for i in 0..9 {
+                if self.fields[i] == Cell::Empty {
+                    self.fields[i] = Cell::X; // Do move for AI
+                    let score = self.minimax(depth + 1, false);
+                    self.fields[i] = Cell::Empty; // Undo move
+                    best_score = best_score.max(score);
+                }
+            }
+            best_score
+        } else {
+            let mut best_score = i32::MAX;
+            for i in 0..9 {
+                if self.fields[i] == Cell::Empty {
+                    self.fields[i] = Cell::O; // Do move for opponent
+                    let score = self.minimax(depth + 1, true);
+                    self.fields[i] = Cell::Empty; // Undo move
+                    best_score = best_score.min(score);
+                }
+            }
+            best_score
+        }
+    }
+
+    pub fn find_best_move(&mut self) -> Option<usize> {
+        let mut best_score = i32::MIN;
+        let mut best_move = None;
+
+        for i in 0..9 {
+            if self.fields[i] == Cell::Empty {
+                self.fields[i] = Cell::X; // Do move for AI
+                let score = self.minimax(0, false);
+                self.fields[i] = Cell::Empty; // Undo move
+
+                if score > best_score {
+                    best_score = score;
+                    best_move = Some(i);
+                }
+            }
+        }
+        best_move
     }
 }
