@@ -7,9 +7,13 @@ use board::Board;
 fn main() {
     println!("Hello, world!");
 
-    let board = Board::new();
+    let mut board = Board::new();
 
-    Board::print(&board);
+    board.display();
+
+    let success = board.make_move(0, cell::Cell::X);
+
+    board.display();
 }
 
 
