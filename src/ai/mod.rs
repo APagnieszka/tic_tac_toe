@@ -1,5 +1,6 @@
 pub mod minimax;
 pub mod ml;
+mod ml_model;
 
 use minimax::MinimaxAi;
 use ml::MlAi;

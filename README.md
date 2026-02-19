@@ -23,6 +23,11 @@ cargo run -- cli ml
 cargo run -- window ml
 ```
 
+## ML Plan
+
+The `ml` AI strategy is planned to use a small MLP (Multi-Layer Perceptron) model.
+The implementation will be based on the `burn` Rust machine learning library.
+
 ## Code Quality and CI
 
 This repository includes a GitHub Actions workflow: [.github/workflows/ci.yml](.github/workflows/ci.yml).
