@@ -32,7 +32,7 @@ impl Board {
             return true;
         }
 
-        return false;
+        false
     }
 
     pub fn check_winner(&self) -> Option<Cell> {
@@ -69,5 +69,11 @@ impl Board {
 
     pub fn is_full(&self) -> bool {
         self.fields.iter().all(|&cell| cell != Cell::Empty)
+    }
+}
+
+impl Default for Board {
+    fn default() -> Self {
+        Self::new()
     }
 }

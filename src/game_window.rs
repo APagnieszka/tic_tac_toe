@@ -1,6 +1,6 @@
 use macroquad::prelude::*;
 
-use crate::ai::{build_ai, AiMode, AiStrategy};
+use crate::ai::{AiMode, AiStrategy, build_ai};
 use crate::board::Board;
 use crate::cell::Cell;
 
@@ -43,16 +43,16 @@ impl GameWindow {
 
         if is_mouse_button_pressed(MouseButton::Left) {
             let (mouse_x, mouse_y) = mouse_position();
-            if let Some(index) = Self::cell_from_mouse(mouse_x, mouse_y) {
-                if self.board.make_move(index, Cell::O) {
-                    self.update_game_over_state();
+            if let Some(index) = Self::cell_from_mouse(mouse_x, mouse_y)
+                && self.board.make_move(index, Cell::O)
+            {
+                self.update_game_over_state();
 
-                    if !self.game_over {
-                        if let Some(best_move) = self.ai.choose_move(&self.board) {
-                            self.board.make_move(best_move, Cell::X);
-                        }
-                        self.update_game_over_state();
+                if !self.game_over {
+                    if let Some(best_move) = self.ai.choose_move(&self.board) {
+                        self.board.make_move(best_move, Cell::X);
                     }
+                    self.update_game_over_state();
                 }
             }
         }
@@ -63,10 +63,8 @@ impl GameWindow {
     }
 
     fn cell_from_mouse(mouse_x: f32, mouse_y: f32) -> Option<usize> {
-        if mouse_x < OFFSET_X
-            || mouse_x > OFFSET_X + BOARD_SIZE
-            || mouse_y < OFFSET_Y
-            || mouse_y > OFFSET_Y + BOARD_SIZE
+        if !(OFFSET_X..=OFFSET_X + BOARD_SIZE).contains(&mouse_x)
+            || !(OFFSET_Y..=OFFSET_Y + BOARD_SIZE).contains(&mouse_y)
         {
             return None;
         }
@@ -135,6 +133,12 @@ impl GameWindow {
             None => "Your move (O)",
         };
 
-        draw_text(status, OFFSET_X, OFFSET_Y + BOARD_SIZE + 40.0, 32.0, DARKGRAY);
+        draw_text(
+            status,
+            OFFSET_X,
+            OFFSET_Y + BOARD_SIZE + 40.0,
+            32.0,
+            DARKGRAY,
+        );
     }
 }

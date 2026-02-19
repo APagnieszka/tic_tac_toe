@@ -7,11 +7,6 @@ pub struct MlAi;
 
 impl AiStrategy for MlAi {
     fn choose_move(&self, board: &Board) -> Option<usize> {
-        for i in 0..9 {
-            if board.fields[i] == Cell::Empty {
-                return Some(i);
-            }
-        }
-        None
+        (0..9).find(|&i| board.fields[i] == Cell::Empty)
     }
 }

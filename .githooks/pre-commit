@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "[pre-commit] Running rustfmt check..."
+cargo fmt --all -- --check
+
+echo "[pre-commit] Running clippy..."
+cargo clippy --all-targets --all-features -- -D warnings
+
+echo "[pre-commit] OK"

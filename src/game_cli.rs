@@ -1,6 +1,6 @@
 use std::io;
 
-use crate::ai::{build_ai, AiMode, AiStrategy};
+use crate::ai::{AiMode, AiStrategy, build_ai};
 use crate::board::Board;
 use crate::cell::Cell;
 
