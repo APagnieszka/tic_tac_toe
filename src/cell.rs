@@ -1,6 +1,6 @@
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum Cell {
-        Empty,
-        X,
-        O,
-    }
+    Empty,
+    X,
+    O,
+}

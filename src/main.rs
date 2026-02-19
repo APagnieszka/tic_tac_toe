@@ -1,4 +1,3 @@
-
 mod board;
 mod cell;
 
@@ -14,7 +13,9 @@ fn main() {
     let success = board.make_move(0, cell::Cell::X);
 
     board.display();
+
+    board.display_winner();
+    let success = board.make_move(1, cell::Cell::O);
+    let success = board.make_move(2, cell::Cell::X);
+    board.display_winner();
 }
-
-
-
