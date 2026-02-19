@@ -1,15 +1,20 @@
 use std::io;
 
+use crate::ai::{build_ai, AiMode, AiStrategy};
 use crate::board::Board;
 use crate::cell::Cell;
 
 pub struct GameCli {
     board: Board,
+    ai: Box<dyn AiStrategy>,
 }
 
 impl GameCli {
-    pub fn new() -> Self {
-        Self { board: Board::new() }
+    pub fn new(ai_mode: AiMode) -> Self {
+        Self {
+            board: Board::new(),
+            ai: build_ai(ai_mode),
+        }
     }
 
     pub fn run(&mut self) {
@@ -27,7 +32,7 @@ impl GameCli {
                 break;
             }
 
-            if let Some(best_move) = self.board.find_best_move() {
+            if let Some(best_move) = self.ai.choose_move(&self.board) {
                 self.board.make_move(best_move, Cell::X);
             }
             self.board.display();
@@ -53,5 +58,15 @@ impl GameCli {
                 _ => println!("Invalid input. Please enter a number between 0 and 8."),
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn game_cli_new_accepts_ai_mode() {
+        let _game = GameCli::new(AiMode::Minimax);
     }
 }

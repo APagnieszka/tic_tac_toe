@@ -1,5 +1,6 @@
 use macroquad::prelude::*;
 
+use crate::ai::{build_ai, AiMode, AiStrategy};
 use crate::board::Board;
 use crate::cell::Cell;
 
@@ -11,13 +12,15 @@ const OFFSET_Y: f32 = 40.0;
 pub struct GameWindow {
     board: Board,
     game_over: bool,
+    ai: Box<dyn AiStrategy>,
 }
 
 impl GameWindow {
-    pub fn new() -> Self {
+    pub fn new(ai_mode: AiMode) -> Self {
         Self {
             board: Board::new(),
             game_over: false,
+            ai: build_ai(ai_mode),
         }
     }
 
@@ -45,7 +48,7 @@ impl GameWindow {
                     self.update_game_over_state();
 
                     if !self.game_over {
-                        if let Some(best_move) = self.board.find_best_move() {
+                        if let Some(best_move) = self.ai.choose_move(&self.board) {
                             self.board.make_move(best_move, Cell::X);
                         }
                         self.update_game_over_state();
