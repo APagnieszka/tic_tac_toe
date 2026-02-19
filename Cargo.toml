@@ -5,3 +5,5 @@ edition = "2024"
 
 [dependencies]
 macroquad ="0.4"
+burn = "0.18"
+burn-ndarray = "0.18"
